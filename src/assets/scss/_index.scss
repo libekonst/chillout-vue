@@ -1,0 +1,60 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit 100%;
+  vertical-align: baseline;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  line-height: 1;
+  height: 100vh;
+  width: 100vw;
+  color: #2c3e50;
+  font-family: 'Montserrat', 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  background-color: #fafafa;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.01);
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+/* Track */
+
+/* ::-webkit-scrollbar-track {
+  width: 0.3rem;
+} */
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: rgb(199, 199, 199);
+  border-radius: 5px;
+  transition: all 2s linear;
+
+  &:hover {
+    background-color: rgb(163, 163, 163);
+  }
+
+  &:hover::-webkit-scrollbar {
+    width: 2rem;
+  }
+
+  &:active {
+    background-color: rgb(114, 114, 114);
+  }
+}
+
+ol,
+ul,
+li {
+  list-style: none;
+}

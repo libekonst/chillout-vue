@@ -1,45 +1,21 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <!-- <router-link to="/">Home</router-link>| -->
-      <!-- <router-link to="/about">About</router-link> -->
-    </div>
-    <!-- <router-view/> -->
+    <!-- <div id="nav"> -->
+    <!-- <router-link to="/">Home</router-link>| -->
+    <!-- <router-link to="/about">About</router-link> -->
+    <!-- </div> -->
+    <router-view/>
   </div>
 </template>
 
 <style lang="scss">
 /* Reset */
+@import '@/assets/scss/_index.scss';
 @import '@/assets/scss/_normalize.scss';
 
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font: inherit 100%;
-  vertical-align: baseline;
-}
-
-body {
-  line-height: 1;
-  background-color: red;
-  height: 100vh;
-  width: 100vw;
-}
-
-ol,
-ul {
-  list-style: none;
-}
-
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  width: 100%;
+  height: 100%;
 }
 
 #nav {
