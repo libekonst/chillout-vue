@@ -9,6 +9,31 @@
 </template>
 
 <style lang="scss">
+/* Reset */
+@import '@/assets/scss/_normalize.scss';
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit 100%;
+  vertical-align: baseline;
+}
+
+body {
+  line-height: 1;
+  background-color: red;
+  height: 100vh;
+  width: 100vw;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
