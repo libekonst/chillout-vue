@@ -12,10 +12,10 @@ export default {
 
 <template>
   <div>
-    <!-- <transition name="fade"> -->
-      <div class="placeholder" v-show="!hasLoaded"></div>
-    <!-- </transition> -->
     <transition name="fade">
+      <div class="placeholder" v-show="!hasLoaded"></div>
+    </transition>
+    <transition name="fade2">
       <img v-bind="$attrs" @load="handleLoad()" v-show="hasLoaded">
     </transition>
   </div>
@@ -55,7 +55,7 @@ img {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .fade-enter,
@@ -65,6 +65,21 @@ img {
 
 .fade-leave,
 .fade-enter-to {
+  opacity: 1;
+}
+
+.fade2-enter-active,
+.fade2-leave-active {
+  transition: 0.3s opacity 0.3s ease-in-out;
+}
+
+.fade2-enter,
+.fade2-leave-to {
+  opacity: 0;
+}
+
+.fade2-leave,
+.fade2-enter-to {
   opacity: 1;
 }
 </style>
