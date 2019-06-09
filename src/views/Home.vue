@@ -8,6 +8,8 @@
         <HelloWorld msg="Ooooh it's amazing! "/>
         <HelloWorld msg="Ooooh fantastic!"/>
         <HelloWorld msg="Aaaaah"/>
+
+        <ListItem v-for="radio of radios" :name="radio.name" :image="radio.image" :key="radio.id"/>
       </div>
     </div>
     <div class="player">Player</div>
@@ -17,11 +19,17 @@
 <script>
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue';
+import ListItem from '@/components/radio-collection/ListItem.vue';
+import data from '@/data';
 
 export default {
   name: 'home',
   components: {
     HelloWorld,
+    ListItem,
+  },
+  computed: {
+    radios: () => data,
   },
 };
 </script>
@@ -38,6 +46,7 @@ export default {
 
 .appbar {
   background-color: purple;
+  /* background-color: #42b983; */
 }
 
 .content {
