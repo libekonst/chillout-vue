@@ -8,8 +8,11 @@
         <HelloWorld msg="Ooooh it's amazing! "/>
         <HelloWorld msg="Ooooh fantastic!"/>
         <HelloWorld msg="Aaaaah"/>
-
-        <ListItem v-for="radio of radios" :name="radio.name" :image="radio.image" :key="radio.id"/>
+        <button @click="changeCategory('music')">Music</button>
+        <br>
+        <button @click="changeCategory('news')">News</button>
+        <br>
+        <ListTile v-for="radio of radios" :name="radio.name" :image="radio.image" :key="radio.id"/>
       </div>
     </div>
     <div class="player">Player</div>
@@ -19,17 +22,25 @@
 <script>
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue';
-import ListItem from '@/components/radio-collection/ListItem.vue';
+import ListTile from '@/components/radio-collection/ListTile.vue';
 import data from '@/data';
 
 export default {
   name: 'home',
   components: {
     HelloWorld,
-    ListItem,
+    ListTile,
   },
+  data: () => ({ category: 'music' }),
   computed: {
-    radios: () => data,
+    radios() {
+      return data.filter(radio => radio.label === this.category);
+    },
+  },
+  methods: {
+    changeCategory(category) {
+      this.category = category;
+    },
   },
 };
 </script>

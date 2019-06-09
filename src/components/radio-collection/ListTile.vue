@@ -1,23 +1,51 @@
 <script>
 export default {
-  name: 'ListItem',
+  name: 'ListTile',
   props: {
     name: String,
     image: String,
+  },
+  data: () => ({ isActive: false, isHovered: false }),
+  methods: {
+    play() {
+      this.isActive = !this.isActive;
+    },
+    handleEnter() {
+      this.isHovered = true;
+    },
+    handleLeave() {
+      this.isHovered = false;
+    },
+  },
+  computed: {
+    actionIcon() {
+      if (this.isHovered && this.isActive) return 'ios-pause';
+      if (!this.isHovered && this.isActive) return 'ios-volume-high';
+      return 'ios-play';
+    },
   },
 };
 </script>
 
 
 <template>
-  <li>
-    <div>&#8711;</div>
-    <div>&#8709;</div>
+  <li @click="play()" @mouseenter="handleEnter()" @mouseleave="handleLeave()">
+    <!-- <div class="action"> -->
+    <div :class="['action', {'action--show': isActive || isHovered}]">
+      <ion-icon
+        size="large"
+        :name="actionIcon"
+        :style="actionIcon !== 'ios-play' && {color: 'purple'}"
+      ></ion-icon>
+    </div>
+    <!-- </div> -->
+    <div class="favorite">
+      <ion-icon name="md-heart-empty"></ion-icon>
+    </div>
     <div>
       <img :src="image" :alt="`${name}'s logo`">
     </div>
     <div class="title">{{name}}</div>
-   
   </li>
 </template>
 
@@ -32,7 +60,7 @@ li {
   padding: 0.5rem 0;
 
   /* Grid layout */
-  display: grid;
+  /* display: grid;
   grid-template-columns: 0 3rem 3rem auto 0;
   grid-column-gap: 0.5rem;
   grid-template-areas: 'playcontrol favorite image title genre';
@@ -44,7 +72,12 @@ li {
   }
   @media (min-width: $md) {
     grid-template-columns: 3rem 3rem 3rem auto 8rem;
-  }
+  } */
+
+  /* Flex layout */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 
   /* Highlight On Hover */
   &::before {
@@ -75,6 +108,30 @@ li {
     height: 1px;
     background-color: rgba(70, 70, 70, 0.05);
   }
+}
+
+.action {
+  font-size: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.1s ease-out;
+
+  @media (max-width: $sm) {
+    display: none;
+  }
+
+  &--show {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.favorite:active {
+  transform: scale(1.5);
+}
+
+li div {
+  margin: 0 0.5rem;
 }
 
 img {
