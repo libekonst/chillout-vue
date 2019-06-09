@@ -29,13 +29,18 @@ export default {
 
 
 <template>
-  <li @click="play()" @mouseenter="handleEnter()" @mouseleave="handleLeave()">
+  <li
+    @click="play()"
+    @mouseenter="handleEnter()"
+    @mouseleave="handleLeave()"
+    :class="isActive && 'li--active'"
+  >
     <!-- <div class="action"> -->
     <div :class="['action', {'action--show': isActive || isHovered}]">
       <ion-icon
         size="large"
         :name="actionIcon"
-        :style="actionIcon !== 'ios-play' && {color: 'purple'}"
+        :style="actionIcon !== 'ios-play' && {color: 'white'}"
       ></ion-icon>
     </div>
     <!-- </div> -->
@@ -107,6 +112,16 @@ li {
     bottom: 0;
     height: 1px;
     background-color: rgba(70, 70, 70, 0.05);
+  }
+}
+
+.li--active {
+  color: white;
+
+  &::before {
+    background-color: rgba(127, 0, 127, 1);
+    opacity: 1;
+    visibility: visible;
   }
 }
 
