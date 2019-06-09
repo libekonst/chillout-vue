@@ -1,6 +1,9 @@
 <script>
+import AsyncImage from '@/components/AsyncImage.vue';
+
 export default {
   name: 'ListTile',
+  components: { AsyncImage },
   props: {
     name: String,
     image: String,
@@ -48,7 +51,7 @@ export default {
       <ion-icon name="md-heart-empty"></ion-icon>
     </div>
     <div>
-      <img :src="image" :alt="`${name}'s logo`">
+      <AsyncImage :src="image" :alt="`${name}'s logo`" class="image"/>
     </div>
     <div class="title">{{name}}</div>
   </li>
@@ -130,6 +133,8 @@ li {
   opacity: 0;
   visibility: hidden;
   transition: all 0.1s ease-out;
+  width: 2rem;
+  height: 2rem;
 
   @media (max-width: $sm) {
     display: none;
@@ -141,15 +146,20 @@ li {
   }
 }
 
-.favorite:active {
-  transform: scale(1.5);
+.favorite {
+  width: 1rem;
+  height: 1rem;
+
+  &:active {
+    transform: scale(1.5);
+  }
 }
 
 li div {
   margin: 0 0.5rem;
 }
 
-img {
+.image {
   border-radius: 5px;
   width: 3rem;
   height: 3rem;
