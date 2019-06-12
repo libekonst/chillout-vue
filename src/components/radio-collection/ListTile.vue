@@ -111,6 +111,12 @@ li {
 .li--active {
   color: #052fb8;
   font-weight: bold;
+
+  &::before {
+    background-color: rgba(210, 210, 210, 0.3);
+    visibility: visible;
+    opacity: 1;
+  }
 }
 
 .action {
