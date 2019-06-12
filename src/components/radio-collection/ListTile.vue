@@ -65,27 +65,17 @@ li {
   position: relative;
   cursor: default;
   padding: 0.5rem 0;
-  /* font-family: 'Roboto'; */
 
   /* Grid layout */
-  /* display: grid;
-  grid-template-columns: 0 3rem 3rem auto 0;
+  display: grid;
+  grid-template-columns: 3rem 3rem 3rem auto;
   grid-column-gap: 0.5rem;
-  grid-template-areas: 'playcontrol favorite image title genre';
   align-items: center;
-  justify-items: start;
+  justify-items: center;
 
-  @media (min-width: $sm) {
-    grid-template-columns: 0 3rem 3rem auto 8rem;
+  @media (max-width: $sm) {
+    grid-template-columns: 0 3rem 3rem auto;
   }
-  @media (min-width: $md) {
-    grid-template-columns: 3rem 3rem 3rem auto 8rem;
-  } */
-
-  /* Flex layout */
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
 
   /* Highlight On Hover */
   &::before {
@@ -133,16 +123,16 @@ li {
   /* Center children */
   & * {
     margin: auto;
-  }
 
-  @media (max-width: $sm) {
-    display: none;
+    @media (max-width: $sm) {
+      display: none;
+    }
   }
 }
 
 .favorite {
-  width: 1rem;
-  height: 1rem;
+  /* width: 100%;
+  height: 100%; */
 
   &:active {
     transform: scale(1.5);
@@ -163,8 +153,8 @@ li div {
 .title {
   /* <- Define the element's width using 'justify-self: stretch' instead
   of 'width: 100%' to truncate text on Chrome. Firefox is OK with both width and justify-self. */
-  align-self: auto;
   justify-self: stretch;
+  text-align: start;
 
   /* Text ellipsis. Overflow prevents truncating. */
   white-space: nowrap;
