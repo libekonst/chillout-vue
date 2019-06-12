@@ -46,6 +46,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/_scrollbar.scss';
+
 .home {
   width: 100%;
   height: 100%;
@@ -61,16 +63,10 @@ export default {
 }
 
 .content {
+  @include autohideScrollbar;
+
   overflow: auto;
   padding-bottom: 0.5rem;
-
-  &::-webkit-scrollbar-thumb {
-    visibility: hidden;
-  }
-
-  &:hover::-webkit-scrollbar-thumb {
-    visibility: visible;
-  }
 }
 
 .player {
