@@ -12,7 +12,18 @@
         <br>
         <button @click="changeCategory('news')">News</button>
         <br>
-        <ListTile v-for="radio of radios" :name="radio.name" :image="radio.image" :key="radio.id"/>
+        <ul >
+          <ListTile
+            v-for="radio of radios"
+            :name="radio.name"
+            :image="radio.image"
+            :key="radio.id"
+            :id="radio.id"
+            :isActive="radio.id == selected"
+            :isPlaying="isPlaying"
+            @play-radio="selectRadio"
+          />
+        </ul>
       </div>
     </div>
     <div class="player">Player</div>
@@ -31,15 +42,27 @@ export default {
     HelloWorld,
     ListTile,
   },
-  data: () => ({ category: 'music' }),
+  data: () => ({ category: 'music', selected: null, isPlaying: false }),
   computed: {
     radios() {
       return data.filter(radio => radio.label === this.category);
+    },
+    isSelectedRadio(id) {
+      return id === this.selected;
     },
   },
   methods: {
     changeCategory(category) {
       this.category = category;
+    },
+    selectRadio(id) {
+      if (id === undefined) return;
+
+      // If the radio is already selected, toggle isPlaying.
+      if (this.selected === id) return (this.isPlaying = !this.isPlaying);
+
+      this.selected = id;
+      this.isPlaying = true;
     },
   },
 };
@@ -58,8 +81,9 @@ export default {
 }
 
 .appbar {
-  background-color: purple;
-  /* background-color: #42b983; */
+  /* background-color: purple; */
+
+  background-color: #42b983;
 }
 
 .content {

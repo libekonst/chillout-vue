@@ -7,24 +7,26 @@ export default {
   props: {
     name: String,
     image: String,
+    isActive: Boolean,
+    isPlaying: Boolean,
+    id: Number,
   },
-  data: () => ({ isActive: false, isHovered: false }),
+  data: () => ({ isHovered: false }),
   methods: {
-    play() {
-      this.isActive = !this.isActive;
-    },
     handleEnter() {
       this.isHovered = true;
     },
     handleLeave() {
       this.isHovered = false;
     },
+    handleClick() {
+      this.$emit('play-radio', this.id);
+    },
   },
   computed: {
-    actionIcon() {
-      if (this.isHovered && this.isActive) return 'ios-pause';
-      if (!this.isHovered && this.isActive) return 'ios-volume-high';
-      return 'ios-play';
+    actionTitle() {
+      if (this.isPlaying) return 'Pause';
+      return 'Play';
     },
   },
 };
@@ -33,21 +35,18 @@ export default {
 
 <template>
   <li
-    @click="play()"
     @mouseenter="handleEnter()"
     @mouseleave="handleLeave()"
+    @click="$emit('play-radio', id)"
     :class="isActive && 'li--active'"
   >
-    <!-- <div class="action"> -->
-    <div :class="['action', {'action--show': isActive || isHovered}]">
-      <ion-icon
-        size="large"
-        :name="actionIcon"
-        :style="actionIcon !== 'ios-play' && {color: 'white'}"
-      ></ion-icon>
+    <div class="action" :title="actionTitle">
+      <ion-icon v-if="isHovered && isActive && isPlaying" name="ios-pause"></ion-icon>
+      <ion-icon v-else-if="!isHovered && isActive && isPlaying" name="ios-volume-high"></ion-icon>
+      <ion-icon v-else-if="isHovered" name="ios-play"></ion-icon>
     </div>
-    <!-- </div> -->
-    <div class="favorite">
+
+    <div class="favorite" @click.stop>
       <ion-icon name="md-heart-empty"></ion-icon>
     </div>
     <div>
@@ -66,6 +65,7 @@ li {
   position: relative;
   cursor: default;
   padding: 0.5rem 0;
+  /* font-family: 'Roboto'; */
 
   /* Grid layout */
   /* display: grid;
@@ -119,30 +119,24 @@ li {
 }
 
 .li--active {
-  color: white;
-
-  &::before {
-    background-color: rgba(127, 0, 127, 1);
-    opacity: 1;
-    visibility: visible;
-  }
+  color: #052fb8;
+  font-weight: bold;
 }
 
 .action {
-  font-size: 1rem;
-  opacity: 0;
-  visibility: hidden;
   transition: all 0.1s ease-out;
   width: 2rem;
   height: 2rem;
+  display: flex;
+  font-size: 1.8rem;
+
+  /* Center children */
+  & * {
+    margin: auto;
+  }
 
   @media (max-width: $sm) {
     display: none;
-  }
-
-  &--show {
-    opacity: 1;
-    visibility: visible;
   }
 }
 
