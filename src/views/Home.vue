@@ -104,4 +104,8 @@ export default {
     #2c2b48
   );
 }
+
+ul {
+  padding: 0 1rem;
+}
 </style>

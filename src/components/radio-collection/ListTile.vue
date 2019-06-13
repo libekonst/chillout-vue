@@ -109,9 +109,11 @@ li {
 }
 
 .li--active {
-  /* color: #052fb8; */
-  color: #002fff;
-  /* color: #0057ff; */
+  color: #052fb8;
+  /* color: #002fff; */
+  /* color: #1437fa; */
+  color: #0057ff;
+  /* color: #42b983; */
   font-weight: bold;
 
   &::before {
