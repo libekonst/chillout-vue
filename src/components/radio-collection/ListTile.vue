@@ -38,7 +38,7 @@ export default {
   <li
     @mouseenter="handleEnter()"
     @mouseleave="handleLeave()"
-    @click="$emit('play-radio', id)"
+    @click="handleClick()"
     :class="[{'li--playing':isPlaying && isSelected}, {'li--selected': isSelected}]"
   >
     <!-- Play / Pause / Speaker icon -->

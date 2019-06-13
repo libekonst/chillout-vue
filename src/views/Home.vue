@@ -30,7 +30,13 @@
           <h2 class="radio-header">Your Favorites</h2>
         </div>
         <ul v-if="favorites.length !== 0" class="favorites-list">
-          <FavoriteCard v-for="(fav, i) in favorites" :key="i"/>
+          <li v-for="fav in favorites" :key="fav" class="card-wrapper">
+            <FavoriteCard
+              :id="fav"
+              :image="radios.find(r=> r.id === fav).image"
+              :isPlaying="isPlaying && selected === fav"
+            />
+          </li>
         </ul>
         <div v-else class="favorites-empty">
           <p class="favorites-empty__text">Your favorite radios will appear here.</p>
@@ -181,5 +187,9 @@ export default {
 
 ul {
   padding: 0 1rem;
+}
+
+.card-wrapper {
+  margin: 0.75rem;
 }
 </style>
