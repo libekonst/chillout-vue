@@ -25,7 +25,12 @@
           />
         </ul>
       </section>
-      <section>Favorites</section>
+      <section class="favorites-section">
+        <div class="sticky-top"><h2 class="radio-header">Your Favorites</h2></div>
+        <ul class="favorites-list">
+          <FavoriteCard v-for="(fav, i) in favorites" :key="i"/>
+        </ul>
+      </section>
     </main>
     <footer class="player">Player</footer>
   </div>
@@ -35,6 +40,7 @@
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue';
 import ListTile from '@/components/radio-collection/ListTile.vue';
+import FavoriteCard from '@/components/radio-collection/FavoriteCard.vue';
 import data from '@/data';
 
 export default {
@@ -42,11 +48,15 @@ export default {
   components: {
     HelloWorld,
     ListTile,
+    FavoriteCard,
   },
   data: () => ({ category: 'music', selected: null, isPlaying: false, favorites: [] }),
   computed: {
     radios() {
       return data.filter(radio => radio.label === this.category);
+    },
+    favoritesDummy() {
+      return new Array(30).fill(null);
     },
   },
   methods: {
@@ -93,7 +103,7 @@ export default {
   /* Grid */
   display: grid;
   grid-template-rows: 1fr 3fr;
-  grid-template-columns: 3fr 2fr;
+  grid-template-columns: 2fr 1fr;
   align-items: stretch;
   justify-content: stretch;
 
@@ -113,6 +123,19 @@ export default {
   padding: 0 0 1rem 2rem;
   font-family: 'Roboto', sans-serif;
   font-weight: 500;
+}
+
+.favorites-section {
+  @include autohideScrollbar;
+
+  overflow: auto;
+}
+
+.favorites-list {
+  /* Flex */
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
 }
 
 .player {
