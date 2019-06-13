@@ -46,9 +46,9 @@ export default {
       <ion-icon v-else-if="isHovered" name="ios-play"></ion-icon>
     </div>
 
-    <div class="favorite" @click.stop>
+    <button class="favorite" @click.stop>
       <ion-icon name="md-heart-empty"></ion-icon>
-    </div>
+    </button>
     <div>
       <AsyncImage :src="image" :alt="`${name}'s logo`" class="image"/>
     </div>
@@ -116,11 +116,12 @@ li {
 
   &::before {
     background-color: #efeef5;
-    background-color: #eeedf1;
+    background-color: #f2f1f7;
 
     /* background-color: rgba(201, 198, 218, 0.4); */
-    background-color: rgba(235, 235, 242, 0.8);
-    /* background-color: rgba(210, 210, 210, 0.3); */
+    /* background-color: rgba(235, 235, 242, 0.8); */
+
+    /* background-color: rgba(210, 210, 210, 0.25); */
     visibility: visible;
     opacity: 1;
   }
