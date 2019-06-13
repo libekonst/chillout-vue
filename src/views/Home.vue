@@ -12,16 +12,18 @@
         <br>
         <button @click="changeCategory('news')">News</button>
         <br>
-        <ul >
+        <ul>
           <ListTile
             v-for="radio of radios"
             :name="radio.name"
             :image="radio.image"
             :key="radio.id"
             :id="radio.id"
-            :isSelected="radio.id == selected"
+            :isSelected="radio.id === selected"
             :isPlaying="isPlaying"
-            @play-radio="selectRadio"
+            :isFavorite="favorites.includes(radio.id)"
+            @play-radio="handleSelectRadio"
+            @add-favorite="handleAddFavorite"
           />
         </ul>
       </div>
@@ -42,20 +44,17 @@ export default {
     HelloWorld,
     ListTile,
   },
-  data: () => ({ category: 'music', selected: null, isPlaying: false }),
+  data: () => ({ category: 'music', selected: null, isPlaying: false, favorites: [] }),
   computed: {
     radios() {
       return data.filter(radio => radio.label === this.category);
-    },
-    isSelectedRadio(id) {
-      return id === this.selected;
     },
   },
   methods: {
     changeCategory(category) {
       this.category = category;
     },
-    selectRadio(id) {
+    handleSelectRadio(id) {
       if (id === undefined) return;
 
       // If the radio is already selected, toggle isPlaying.
@@ -63,6 +62,11 @@ export default {
 
       this.selected = id;
       this.isPlaying = true;
+    },
+    handleAddFavorite(id) {
+      if (this.favorites.includes(id))
+        this.favorites = this.favorites.filter(f => f !== id);
+      else this.favorites.push(id);
     },
   },
 };

@@ -9,6 +9,7 @@ export default {
     image: String,
     isSelected: Boolean,
     isPlaying: Boolean,
+    isFavorite: Boolean,
     id: Number,
   },
   data: () => ({ isHovered: false }),
@@ -40,14 +41,21 @@ export default {
     @click="$emit('play-radio', id)"
     :class="[{'li--playing':isPlaying && isSelected}, {'li--selected': isSelected}]"
   >
+    <!-- Play / Pause / Speaker icon -->
     <div class="action" :title="actionTitle">
       <ion-icon v-if="isHovered && isSelected && isPlaying" name="ios-pause"></ion-icon>
       <ion-icon v-else-if="!isHovered && isSelected && isPlaying" name="ios-volume-high"></ion-icon>
       <ion-icon v-else-if="isHovered" name="ios-play"></ion-icon>
     </div>
 
-    <button class="favorite" @click.stop>
-      <ion-icon name="md-heart-empty"></ion-icon>
+    <!-- Onclick, stop propagation and emit add favorite event -->
+    <button
+      :class="['favorite', {'favorite--checked': isFavorite}]"
+      @click.stop="$emit('add-favorite', id)"
+      :title="isFavorite ? 'Remove from Your Favorites': 'Add to Your Favorites'"
+    >
+      <ion-icon v-if="isFavorite" name="md-heart"></ion-icon>
+      <ion-icon v-else name="md-heart-empty"></ion-icon>
     </button>
     <div>
       <AsyncImage :src="image" :alt="`${name}'s logo`" class="image"/>
@@ -149,11 +157,26 @@ li {
 }
 
 .favorite {
-  /* width: 100%;
-  height: 100%; */
+  /* Flex */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Styles */
+  font-size: 1.3rem;
+  color: #2c3e50;
+  transition: color 0.2s linear;
 
   &:active {
-    transform: scale(1.5);
+    transform: scale(0.9);
+  }
+
+  &:hover {
+    color: #42b983;
+  }
+
+  &--checked {
+    color: #42b983;
   }
 }
 
