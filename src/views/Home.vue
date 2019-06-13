@@ -26,10 +26,15 @@
         </ul>
       </section>
       <section class="favorites-section">
-        <div class="sticky-top"><h2 class="radio-header">Your Favorites</h2></div>
-        <ul class="favorites-list">
+        <div class="sticky-top">
+          <h2 class="radio-header">Your Favorites</h2>
+        </div>
+        <ul v-if="favorites.length !== 0" class="favorites-list">
           <FavoriteCard v-for="(fav, i) in favorites" :key="i"/>
         </ul>
+        <div v-else class="favorites-empty">
+          <p class="favorites-empty__text">Your favorite radios will appear here.</p>
+        </div>
       </section>
     </main>
     <footer class="player">Player</footer>
@@ -129,6 +134,23 @@ export default {
   @include autohideScrollbar;
 
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.favorites-empty {
+  flex: 1;
+  display: flex;
+  border-radius: 10px;
+  background-color: #f4f4f4;
+  margin: 0.3rem 0.75rem;
+  padding: 0 0.5rem;
+
+  &__text {
+    color: #afafaf;
+    font-size: 1.5rem;
+    margin: auto;
+  }
 }
 
 .favorites-list {
