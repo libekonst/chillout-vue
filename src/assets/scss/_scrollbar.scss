@@ -4,8 +4,12 @@
 }
 
 /* Track */
-::-webkit-scrollbar-track:hover {
-  background-color: rgba(199, 199, 199, 0.4);
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+
+  &:hover {
+    background-color: rgba(199, 199, 199, 0.3);
+  }
 }
 
 /* Handle */

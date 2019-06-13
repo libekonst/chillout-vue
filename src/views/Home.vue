@@ -1,17 +1,15 @@
 <template>
   <div class="home">
-    <div class="appbar">Appbar</div>
-    <div class="content">
-      <div>
-        <img alt="Vue logo" src="../assets/logo.png">
-
-        <HelloWorld msg="Ooooh it's amazing! "/>
-        <HelloWorld msg="Ooooh fantastic!"/>
-        <HelloWorld msg="Aaaaah"/>
-        <button @click="changeCategory('music')">Music</button>
-        <br>
-        <button @click="changeCategory('news')">News</button>
-        <br>
+    <header class="appbar">Appbar</header>
+    <main class="content">
+      <section>Top left</section>
+      <section>Top Right</section>
+      <section class="radio-list">
+        <div class="sticky-top">
+          <h2 class="radio-header">{{category | toUpperInitial}} Radios</h2>
+          <button @click="changeCategory('music')">Music</button>
+          <button @click="changeCategory('news')">News</button>
+        </div>
         <ul>
           <ListTile
             v-for="radio of radios"
@@ -26,9 +24,10 @@
             @add-favorite="handleAddFavorite"
           />
         </ul>
-      </div>
-    </div>
-    <div class="player">Player</div>
+      </section>
+      <section>Favorites</section>
+    </main>
+    <footer class="player">Player</footer>
   </div>
 </template>
 
@@ -91,10 +90,27 @@ export default {
 }
 
 .content {
+  /* Grid */
+  display: grid;
+  grid-template-rows: 1fr 3fr;
+  grid-template-columns: 3fr 2fr;
+  align-items: stretch;
+  justify-content: stretch;
+
+  /* Styles */
+  overflow: hidden;
+}
+
+.radio-list {
   @include autohideScrollbar;
 
   overflow: auto;
-  padding-bottom: 0.5rem;
+}
+
+.radio-header {
+  font-size: 1.2rem;
+  text-align: start;
+  padding: 0 0 1rem 2rem;
 }
 
 .player {
@@ -107,6 +123,13 @@ export default {
     #24233b,
     #2c2b48
   );
+}
+
+.sticky-top {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #fafafa;
 }
 
 ul {
