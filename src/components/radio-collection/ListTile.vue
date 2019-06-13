@@ -7,7 +7,7 @@ export default {
   props: {
     name: String,
     image: String,
-    isActive: Boolean,
+    isSelected: Boolean,
     isPlaying: Boolean,
     id: Number,
   },
@@ -38,11 +38,11 @@ export default {
     @mouseenter="handleEnter()"
     @mouseleave="handleLeave()"
     @click="$emit('play-radio', id)"
-    :class="isActive && 'li--active'"
+    :class="[{'li--playing':isPlaying && isSelected}, {'li--selected': isSelected}]"
   >
     <div class="action" :title="actionTitle">
-      <ion-icon v-if="isHovered && isActive && isPlaying" name="ios-pause"></ion-icon>
-      <ion-icon v-else-if="!isHovered && isActive && isPlaying" name="ios-volume-high"></ion-icon>
+      <ion-icon v-if="isHovered && isSelected && isPlaying" name="ios-pause"></ion-icon>
+      <ion-icon v-else-if="!isHovered && isSelected && isPlaying" name="ios-volume-high"></ion-icon>
       <ion-icon v-else-if="isHovered" name="ios-play"></ion-icon>
     </div>
 
@@ -108,14 +108,16 @@ li {
   }
 }
 
-.li--active {
+.li--selected {
   color: #052fb8;
   /* color: #002fff; */
   /* color: #1437fa; */
   color: #0057ff;
   /* color: #42b983; */
   font-weight: bold;
+}
 
+.li--playing {
   &::before {
     background-color: #efeef5;
     background-color: #f2f1f7;

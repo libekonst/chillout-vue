@@ -19,7 +19,7 @@
             :image="radio.image"
             :key="radio.id"
             :id="radio.id"
-            :isActive="radio.id == selected"
+            :isSelected="radio.id == selected"
             :isPlaying="isPlaying"
             @play-radio="selectRadio"
           />
