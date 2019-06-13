@@ -111,6 +111,8 @@ export default {
   font-size: 1.2rem;
   text-align: start;
   padding: 0 0 1rem 2rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
 }
 
 .player {
