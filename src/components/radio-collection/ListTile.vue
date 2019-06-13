@@ -109,11 +109,18 @@ li {
 }
 
 .li--active {
-  color: #052fb8;
+  /* color: #052fb8; */
+  color: #002fff;
+  /* color: #0057ff; */
   font-weight: bold;
 
   &::before {
-    background-color: rgba(210, 210, 210, 0.3);
+    background-color: #efeef5;
+    background-color: #eeedf1;
+
+    /* background-color: rgba(201, 198, 218, 0.4); */
+    background-color: rgba(235, 235, 242, 0.8);
+    /* background-color: rgba(210, 210, 210, 0.3); */
     visibility: visible;
     opacity: 1;
   }
@@ -126,7 +133,7 @@ li {
   display: flex;
   font-size: 1.8rem;
 
-  /* Center children */
+  /* Center children, display none on small screens */
   & * {
     margin: auto;
 
