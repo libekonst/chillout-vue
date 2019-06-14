@@ -12,14 +12,14 @@
         </div>
         <ul>
           <ListTile
-            v-for="radio of radios"
+            v-for="radio in radios"
             :name="radio.name"
             :image="radio.image"
             :key="radio.id"
             :id="radio.id"
             :isSelected="radio.id === selected"
             :isPlaying="isPlaying"
-            :isFavorite="favorites.includes(radio.id)"
+            :isFavorite="favorites.includes(radio)"
             @play-radio="handleSelectRadio"
             @add-favorite="handleAddFavorite"
           />
@@ -30,11 +30,12 @@
           <h2 class="radio-header">Your Favorites</h2>
         </div>
         <ul v-if="favorites.length !== 0" class="favorites-list">
-          <li v-for="fav in favorites" :key="fav" class="card-wrapper">
+          <li v-for="(fav, i) in favorites" :key="i" class="card-wrapper">
             <FavoriteCard
-              :id="fav"
-              :image="radios.find(r=> r.id === fav).image"
-              :isPlaying="isPlaying && selected === fav"
+              :id="fav.id"
+              :image="fav.image"
+              :isPlaying="isPlaying && selected === fav.id"
+              @play-radio="handleSelectRadio"
             />
           </li>
         </ul>
@@ -66,9 +67,6 @@ export default {
     radios() {
       return data.filter(radio => radio.label === this.category);
     },
-    favoritesDummy() {
-      return new Array(30).fill(null);
-    },
   },
   methods: {
     changeCategory(category) {
@@ -84,9 +82,11 @@ export default {
       this.isPlaying = true;
     },
     handleAddFavorite(id) {
-      if (this.favorites.includes(id))
-        this.favorites = this.favorites.filter(f => f !== id);
-      else this.favorites.push(id);
+      const radio = this.radios.find(r => r.id === id);
+      if (!radio) return;
+
+      if (!this.favorites.includes(radio)) return this.favorites.push(radio);
+      else this.favorites = this.favorites.filter(f => f !== radio);
     },
   },
 };

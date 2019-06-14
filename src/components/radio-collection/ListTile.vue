@@ -23,6 +23,9 @@ export default {
     handleClick() {
       this.$emit('play-radio', this.id);
     },
+    handleFavorite() {
+      this.$emit('add-favorite', this.id);
+    },
   },
   computed: {
     actionTitle() {
@@ -51,7 +54,7 @@ export default {
     <!-- Onclick, stop propagation and emit add favorite event -->
     <button
       :class="['favorite', {'favorite--checked': isFavorite}]"
-      @click.stop="$emit('add-favorite', id)"
+      @click.stop="handleFavorite"
       :title="isFavorite ? 'Remove from Your Favorites': 'Add to Your Favorites'"
     >
       <ion-icon v-if="isFavorite" name="md-heart"></ion-icon>
@@ -72,7 +75,7 @@ li {
   height: auto;
   position: relative;
   cursor: default;
-  padding: 0.5rem 0;
+  padding: 0.4rem 0;
 
   /* Grid layout */
   display: grid;
@@ -108,8 +111,8 @@ li {
   &::after {
     content: '';
     position: absolute;
-    left: 2rem;
-    right: 2rem;
+    left: 0;
+    right: 0;
     bottom: 0;
     height: 1px;
     background-color: rgba(70, 70, 70, 0.05);
