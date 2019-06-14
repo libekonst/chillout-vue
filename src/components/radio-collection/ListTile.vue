@@ -175,11 +175,12 @@ li {
   }
 
   &:hover {
-    color: #42b983;
+    color: #F54D73;
   }
 
   &--checked {
     color: #42b983;
+    color: #F54D73;
   }
 }
 

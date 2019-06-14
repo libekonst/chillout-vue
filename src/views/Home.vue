@@ -1,14 +1,36 @@
 <template>
-  <div class="home">
-    <header class="appbar">Appbar</header>
+  <header class="home">
+    <header class="header">
+      <div class="background"></div>
+      <div class="image-line">
+        <button
+          :class="['image-category',{'image-category--big': category === 'music'}]"
+          @click="changeCategory('music')"
+        >
+          <div class="image-category__overlay">Music</div>
+          <img
+            src="https://images.unsplash.com/photo-1494232410401-ad00d5433cfa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
+            alt="Music category image"
+          >
+        </button>
+        <button
+          :class="['image-category',{'image-category--big': category === 'news'}]"
+          @click="changeCategory('news')"
+        >
+          <div class="image-category__overlay">News</div>
+          <img
+            src="https://images.unsplash.com/photo-1547679905-3c132ce6d489?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
+            alt="News category image"
+          >
+        </button>
+      </div>
+    </header>
     <main class="content">
-      <section>Top left</section>
-      <section>Top Right</section>
+      <!-- <section>Top left</section> -->
+      <!-- <section>Top Right</section> -->
       <section class="radio-list">
         <div class="sticky-top">
           <h2 class="radio-header">{{category | toUpperInitial}} Radios</h2>
-          <button @click="changeCategory('music')">Music</button>
-          <button @click="changeCategory('news')">News</button>
         </div>
         <ul>
           <ListTile
@@ -46,7 +68,7 @@
       </section>
     </main>
     <footer class="player">Player</footer>
-  </div>
+  </header>
 </template>
 
 <script>
@@ -102,19 +124,93 @@ export default {
 
   /* Grid */
   display: grid;
-  grid-template-rows: 2rem auto 4rem;
+  grid-template-rows: auto 1fr 4rem;
 }
 
-.appbar {
+.header {
   /* background-color: purple; */
+  height: 13rem;
+  /* background-color: #42b983; */
+  position: relative;
+  display: flex;
 
-  background-color: #42b983;
+  & .background {
+    background-color: rgb(23, 25, 54);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 50%;
+    z-index: -1;
+  }
+
+  & .image-line {
+    width: 100%;
+    margin: auto;
+
+    /* Flex */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    & .image-category {
+      position: relative;
+      border-radius: 10px;
+      height: 6rem;
+      width: 7rem;
+      overflow: hidden;
+      margin-right: 2rem;
+      cursor: pointer;
+      border-bottom: 2px solid rgb(245, 77, 115);
+      transition: transform 0.15s ease-out;
+
+      &--big {
+        transform: scale(1.4);
+      }
+
+      &__overlay {
+        /* Position */
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        /* Styles */
+        background-color: rgba(11, 10, 21, 0.2);
+        color: #fafafa;
+        font-size: 1.5rem;
+        font-family: 'Courgette', sans-serif;
+
+        /* Flex */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        /* Reaveal */
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s linear;
+      }
+
+      &:hover .image-category__overlay {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+
+    & img {
+      width: 100%;
+      height: 100%;
+    }
+  }
 }
 
 .content {
   /* Grid */
   display: grid;
-  grid-template-rows: 1fr 3fr;
+  /* grid-template-rows: 1fr 3fr; */
   grid-template-columns: 2fr 1fr;
   align-items: stretch;
   justify-content: stretch;
