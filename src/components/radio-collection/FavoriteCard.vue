@@ -18,18 +18,29 @@ export default {
     handleLeave() {
       this.isHover = false;
     },
+    handleClick() {
+      this.$emit('play-radio', this.id);
+    },
   },
 };
 </script>
 
 <template>
   <div class="card">
-    <div class="media" @mouseenter="handleEnter()" @mouseleave="handleLeave()">
+    <div
+      class="media"
+      @mouseenter="handleEnter()"
+      @mouseleave="handleLeave()"
+      @click="handleClick()"
+    >
       <div :class="['overlay', {'overlay--show': isHover}]"></div>
       <AsyncImage :src="image" :alt="`${name}'s logo`" class="image"/>
       <img :src="image" :class="['blurred', {'blurred--show': isHover}]">
       <div class="icon">
-        <div class="icon__inner">
+        <div
+          :class="['icon__inner', {'icon__inner--border': isHover}]"
+          v-show="isHover || isPlaying"
+        >
           <ion-icon v-if="isHover && isPlaying" name="ios-pause"></ion-icon>
           <ion-icon v-else-if="!isHover && isPlaying" name="ios-volume-high"></ion-icon>
           <ion-icon v-else-if="isHover" name="ios-play"></ion-icon>
@@ -117,13 +128,22 @@ export default {
   justify-content: center;
 
   &__inner {
+    /* Flex */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     /* Styles */
-    font-size: 1.3rem;
+    font-size: 2.3rem;
     color: white;
     border-radius: 50%;
     padding: 0.2rem;
     background-color: rgba(45, 45, 45, 0.6);
-    border: 1px solid white;
+
+    &--border {
+      background-color: rgba(230, 230, 230, 0.7);
+      border: 1px solid white;
+    }
   }
 }
 </style>
