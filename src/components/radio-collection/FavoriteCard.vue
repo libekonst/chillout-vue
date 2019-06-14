@@ -9,6 +9,7 @@ export default {
     image: String,
     isPlaying: Boolean,
     id: Number,
+    title: String,
   },
   data: () => ({ isHover: false }),
   methods: {
@@ -47,13 +48,16 @@ export default {
         </div>
       </div>
     </div>
+    <div class="title">
+      <p class="title__inner">{{title}}</p>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .card {
-  width: auto;
   height: auto;
+  width: 7.5rem;
 }
 
 .media {
@@ -61,7 +65,7 @@ export default {
   border-radius: 10px;
   position: relative;
   height: 7.5rem;
-  width: 7.5rem;
+  width: auto;
 
   /* Flex */
   display: flex;
@@ -144,6 +148,22 @@ export default {
       background-color: rgba(230, 230, 230, 0.7);
       border: 1px solid white;
     }
+  }
+}
+
+.title {
+  width: 100%;
+  text-align: start;
+  margin-top: 0.8rem;
+
+  &__inner {
+    text-transform: capitalize;
+
+    /* Truncate text */
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 </style>

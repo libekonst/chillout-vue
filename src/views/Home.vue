@@ -30,11 +30,12 @@
           <h2 class="radio-header">Your Favorites</h2>
         </div>
         <ul v-if="favorites.length !== 0" class="favorites-list">
-          <li v-for="(fav, i) in favorites" :key="i" class="card-wrapper">
+          <li v-for="fav in favorites" :key="fav.id" class="card-wrapper">
             <FavoriteCard
               :id="fav.id"
               :image="fav.image"
               :isPlaying="isPlaying && selected === fav.id"
+              :title="fav.name"
               @play-radio="handleSelectRadio"
             />
           </li>
