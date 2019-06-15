@@ -4,14 +4,15 @@
       <div class="background"></div>
       <div class="image-line">
         <button
-          :class="['image-category',{'image-category--big': category === 'music'}]"
+          :class="['image-category', 'image-category--music',{'image-category--big': category === 'music'}]"
           @click="changeCategory('music')"
         >
-          <div class="image-category__overlay">Music</div>
-          <img
+          <span :class="[{'image-category__text': category === 'music'}]">Music</span>
+          <!-- <div class="image-category__overlay">Music</div> -->
+          <!-- <img
             src="https://images.unsplash.com/photo-1494232410401-ad00d5433cfa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
             alt="Music category image"
-          >
+          >-->
         </button>
         <button
           :class="['image-category',{'image-category--big': category === 'news'}]"
@@ -160,13 +161,26 @@ export default {
       height: 6rem;
       width: 7rem;
       overflow: hidden;
-      margin-right: 2rem;
+      margin-right: 2.5rem;
       cursor: pointer;
       border-bottom: 2px solid rgb(245, 77, 115);
       transition: transform 0.15s ease-out;
 
+      /* Text */
+      color: #fafafa;
+      font-size: 1.5rem;
+      font-family: 'Courgette', sans-serif;
+
+      &__text::before {
+        content: '-';
+      }
+
+      &--music {
+        background: linear-gradient(to right bottom, #42b983, lighten(#42b983, 30%));
+      }
+
       &--big {
-        transform: scale(1.4);
+        transform: scale(1.4, 1.6);
       }
 
       &__overlay {
