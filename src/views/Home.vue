@@ -4,7 +4,7 @@
       <div class="background"></div>
       <div class="image-line">
         <button
-          :class="['image-category', 'image-category--music',{'image-category--big': category === 'music'}]"
+          :class="['image-category', 'image-category--music', category === 'music' ? 'image-category--big' :'image-category--hover']"
           @click="changeCategory('music')"
         >
           <span :class="[{'image-category__text': category === 'music'}]">Music</span>
@@ -164,19 +164,23 @@ export default {
       margin-right: 2.5rem;
       cursor: pointer;
       border-bottom: 2px solid rgb(245, 77, 115);
-      transition: transform 0.15s ease-out;
+      transition: all 0.15s ease-out;
 
       /* Text */
       color: #fafafa;
       font-size: 1.5rem;
       font-family: 'Courgette', sans-serif;
 
-      &__text::before {
-        content: '-';
+      &--hover:hover {
+        transform: scale(1.1, 1.2);
       }
 
       &--music {
-        background: linear-gradient(to right bottom, #42b983, lighten(#42b983, 30%));
+        background-image: linear-gradient(
+          to right bottom,
+          #42b983,
+          lighten(#42b983, 30%)
+        );
       }
 
       &--big {
