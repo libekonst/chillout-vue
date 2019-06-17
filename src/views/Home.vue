@@ -5,6 +5,7 @@
       <div class="image-line">
         <button
           :class="['image-category', 'image-category--music', category === 'music' ? 'image-category--big' :'image-category--hover']"
+          title="Music"
           @click="changeCategory('music')"
         >
           <span :class="[{'image-category__text': category === 'music'}]">Music</span>
@@ -16,6 +17,7 @@
         </button>
         <button
           :class="['image-category',{'image-category--big': category === 'news'}]"
+          title="News"
           @click="changeCategory('news')"
         >
           <div class="image-category__overlay">News</div>
@@ -164,15 +166,17 @@ export default {
       margin-right: 2.5rem;
       cursor: pointer;
       border-bottom: 2px solid rgb(245, 77, 115);
-      transition: all 0.15s ease-out;
+      transition: transform 0.2s ease-out;
 
       /* Text */
       color: #fafafa;
       font-size: 1.5rem;
       font-family: 'Courgette', sans-serif;
 
-      &--hover:hover {
-        transform: scale(1.1, 1.2);
+      &--hover {
+        &:hover {
+          transform: translateY(-8px);
+        }
       }
 
       &--music {
@@ -183,8 +187,12 @@ export default {
         );
       }
 
+      &__text:hover {
+        transform: translateY(5px);
+      }
+
       &--big {
-        transform: scale(1.4, 1.6);
+        transform: scale(1.4, 1.7);
       }
 
       &__overlay {
