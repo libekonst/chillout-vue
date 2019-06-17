@@ -178,7 +178,7 @@ export default {
         /* no hover on mobile */
         @media (min-width: $md) {
           &:hover {
-            transform: translateY(-8px);
+            transform: translateY(-12px);
           }
         }
       }
