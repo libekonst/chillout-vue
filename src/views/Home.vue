@@ -166,7 +166,7 @@ export default {
       margin-right: 2.5rem;
       cursor: pointer;
       border-bottom: 2px solid rgb(245, 77, 115);
-      transition: transform 0.2s ease-out;
+      transition: all 0.2s ease-in-out;
 
       /* Text */
       color: #fafafa;
@@ -188,11 +188,11 @@ export default {
       }
 
       &__text:hover {
-        transform: translateY(5px);
+        transform: translateY(10px);
       }
 
       &--big {
-        transform: scale(1.4, 1.7);
+        transform: scale(1.4, 1.7) translateY(0);
       }
 
       &__overlay {
