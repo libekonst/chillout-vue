@@ -120,6 +120,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/scss/_scrollbar.scss';
+@import '@/assets/scss/_breakpoints.scss';
 
 .home {
   width: 100%;
@@ -174,8 +175,11 @@ export default {
       font-family: 'Courgette', sans-serif;
 
       &--hover {
-        &:hover {
-          transform: translateY(-8px);
+        /* no hover on mobile */
+        @media (min-width: $md) {
+          &:hover {
+            transform: translateY(-8px);
+          }
         }
       }
 
@@ -188,7 +192,7 @@ export default {
       }
 
       &__text:hover {
-        transform: translateY(10px);
+        /* transform: translateY(10px); */
       }
 
       &--big {
