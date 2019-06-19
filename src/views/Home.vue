@@ -136,16 +136,20 @@ export default {
   height: 13rem;
   /* background-color: #42b983; */
   position: relative;
+  background-color: rgb(23, 25, 54);
   display: flex;
 
   & .background {
-    background-color: rgb(23, 25, 54);
+    background-color: #fafafa;
     position: absolute;
-    top: 0;
+    top: 50%;
     left: 0;
     right: 0;
-    bottom: 50%;
-    z-index: -1;
+    bottom: 0;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0px -4px 26px -5px rgba(95, 95, 95, 0.3);
+
+    // z-index: -1;
   }
 
   & .image-line {
