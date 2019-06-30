@@ -71,7 +71,16 @@
         </div>
       </section>
     </main>
-    <footer class="player">Player</footer>
+    <footer class="player">
+      Player
+      <h1 v-if="isLoading" style="color: white;">LOADING...</h1>
+    </footer>
+    <audio
+      :autoplay="false"
+      ref="audio"
+      @loadstart="handleLoadStarted()"
+      @playing="handleAudioStarted()"
+    >Your browser doesn't support the audio element :(</audio>
   </header>
 </template>
 
@@ -79,6 +88,7 @@
 // @ is an alias to /src
 import ListTile from '@/components/radio-collection/ListTile.vue';
 import FavoriteCard from '@/components/radio-collection/FavoriteCard.vue';
+const resetAudioSrc = 'javascript:void(0)';
 
 export default {
   name: 'home',
@@ -102,6 +112,13 @@ export default {
     favorites() {
       return this.$store.state.favorites;
     },
+    isLoading() {
+      return this.$store.state.isLoading;
+    },
+    radioSource() {
+      if (this.$store.getters.selected !== undefined)
+        return this.$store.getters.selected.source;
+    },
   },
   methods: {
     changeCategory(category) {
@@ -109,10 +126,27 @@ export default {
 
       this.$store.commit('changeCategory', category);
     },
-    handleSelectRadio(id) {
-      if (id === undefined) return;
+    async handleSelectRadio(id) {
+      // If the provided ID is undefined, then no radio is selected.
+      if (id === undefined) return alert('Select a radio first!');
 
+      const { audio } = this.$refs;
+      // Pause the audio and reset the source to force-stop buffering.
+      // Restricts unnecessary data usage and prevents playing old content downloaded after pausing.
+      if (
+        (this.$store.state.selected === id && this.$store.state.isPlaying) ||
+        (this.$store.state.pending === id && this.$store.state.isLoading)
+      ) {
+        audio.pause();
+        audio.src = resetAudioSrc;
+        return audio.load();
+      }
+
+      // If undefined, the promise will be rejected and handled by the onError handler.
       this.$store.dispatch('selectRadio', id);
+      audio.src = this.radioSource;
+      await audio.play();
+      console.log(audio);
     },
     handleAddFavorite(id) {
       if (id === undefined) return;
@@ -123,6 +157,12 @@ export default {
       if (id === undefined) return;
 
       this.$store.commit('removeFavorite', id);
+    },
+    handleLoadStarted() {
+      this.$store.dispatch('startLoad');
+    },
+    handleAudioStarted() {
+      this.$store.dispatch('startPlaying');
     },
   },
 };

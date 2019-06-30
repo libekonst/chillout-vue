@@ -19,14 +19,12 @@
           <ion-icon v-else-if="isHover" name="ios-play"></ion-icon>
         </div>
       </div>
-      <!-- <div class="favorite-2"> -->
       <FavoriteButton
         v-if="isHover"
         :isFavorite="true"
         @click.stop.native="$emit('remove', id)"
         class="favorite"
       />
-      <!-- </div> -->
     </div>
     <div class="title">
       <p class="title__inner">{{title}}</p>
