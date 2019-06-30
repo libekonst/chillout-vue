@@ -1,4 +1,3 @@
-// import Vue from 'vue';
 import { toUpperInitial } from './toUpperInitial';
 
 export default {

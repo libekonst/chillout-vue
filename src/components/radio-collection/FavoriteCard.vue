@@ -20,7 +20,7 @@ export default {
       this.isHover = false;
     },
     handleClick() {
-      this.$emit('play-radio', this.id);
+      this.$emit('play', this.id);
     },
   },
 };

@@ -1,9 +1,41 @@
+<template>
+  <li
+    @mouseenter="handleEnter()"
+    @mouseleave="handleLeave()"
+    @click="handleClick()"
+    :class="[{'li--playing':isPlaying && isSelected}, {'li--selected': isSelected}]"
+  >
+    <!-- Play / Pause / Speaker icon -->
+    <div class="action" :title="actionTitle">
+      <ion-icon v-if="isHovered && isSelected && isPlaying" name="ios-pause"></ion-icon>
+      <ion-icon v-else-if="!isHovered && isSelected && isPlaying" name="ios-volume-high"></ion-icon>
+      <ion-icon v-else-if="isHovered" name="ios-play"></ion-icon>
+    </div>
+
+    <!-- Onclick, stop propagation and emit add favorite event -->
+    <button
+      :class="['favorite', {'favorite--checked': isFavorite}]"
+      @click.stop="handleFavorite"
+      :title="isFavorite ? 'Remove from Your Favorites': 'Add to Your Favorites'"
+    >
+      <ion-icon v-if="isFavorite" name="md-heart"></ion-icon>
+      <ion-icon v-else name="md-heart-empty"></ion-icon>
+    </button>
+    <!-- <FavoriteButton :isFavorite="isFavorite" @click.stop="handleFavorite" /> -->
+    <div>
+      <AsyncImage :src="image" :alt="`${name}'s logo`" class="image"/>
+    </div>
+    <div class="title">{{name}}</div>
+  </li>
+</template>
+
 <script>
 import AsyncImage from '@/components/AsyncImage.vue';
+import FavoriteButton from '@/components/FavoriteButton.vue'
 
 export default {
   name: 'ListTile',
-  components: { AsyncImage },
+  components: { AsyncImage, FavoriteButton },
   props: {
     name: String,
     image: String,
@@ -35,37 +67,6 @@ export default {
   },
 };
 </script>
-
-
-<template>
-  <li
-    @mouseenter="handleEnter()"
-    @mouseleave="handleLeave()"
-    @click="handleClick()"
-    :class="[{'li--playing':isPlaying && isSelected}, {'li--selected': isSelected}]"
-  >
-    <!-- Play / Pause / Speaker icon -->
-    <div class="action" :title="actionTitle">
-      <ion-icon v-if="isHovered && isSelected && isPlaying" name="ios-pause"></ion-icon>
-      <ion-icon v-else-if="!isHovered && isSelected && isPlaying" name="ios-volume-high"></ion-icon>
-      <ion-icon v-else-if="isHovered" name="ios-play"></ion-icon>
-    </div>
-
-    <!-- Onclick, stop propagation and emit add favorite event -->
-    <button
-      :class="['favorite', {'favorite--checked': isFavorite}]"
-      @click.stop="handleFavorite"
-      :title="isFavorite ? 'Remove from Your Favorites': 'Add to Your Favorites'"
-    >
-      <ion-icon v-if="isFavorite" name="md-heart"></ion-icon>
-      <ion-icon v-else name="md-heart-empty"></ion-icon>
-    </button>
-    <div>
-      <AsyncImage :src="image" :alt="`${name}'s logo`" class="image"/>
-    </div>
-    <div class="title">{{name}}</div>
-  </li>
-</template>
 
 <style lang="scss" scoped>
 @import '@/assets/scss/_breakpoints.scss';
@@ -156,31 +157,6 @@ li {
     @media (max-width: $sm) {
       display: none;
     }
-  }
-}
-
-.favorite {
-  /* Flex */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  /* Styles */
-  font-size: 1.3rem;
-  color: #2c3e50;
-  transition: color 0.2s linear;
-
-  &:active {
-    transform: scale(0.9);
-  }
-
-  &:hover {
-    color: #F54D73;
-  }
-
-  &--checked {
-    color: #42b983;
-    color: #F54D73;
   }
 }
 

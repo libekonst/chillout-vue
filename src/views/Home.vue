@@ -24,7 +24,7 @@
           <img
             src="https://images.unsplash.com/photo-1547679905-3c132ce6d489?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
             alt="News category image"
-          >
+          />
         </button>
       </div>
     </header>
@@ -61,7 +61,7 @@
               :image="fav.image"
               :isPlaying="isPlaying && selected === fav.id"
               :title="fav.name"
-              @play-radio="handleSelectRadio"
+              @play="handleSelectRadio(fav.id)"
             />
           </li>
         </ul>
@@ -76,43 +76,47 @@
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
 import ListTile from '@/components/radio-collection/ListTile.vue';
 import FavoriteCard from '@/components/radio-collection/FavoriteCard.vue';
-import data from '@/data';
 
 export default {
   name: 'home',
   components: {
-    HelloWorld,
     ListTile,
     FavoriteCard,
   },
-  data: () => ({ category: 'music', selected: null, isPlaying: false, favorites: [] }),
   computed: {
     radios() {
-      return data.filter(radio => radio.label === this.category);
+      return this.$store.getters.radios;
+    },
+    selected() {
+      return this.$store.state.selected;
+    },
+    isPlaying() {
+      return this.$store.state.isPlaying;
+    },
+    category() {
+      return this.$store.state.category;
+    },
+    favorites() {
+      return this.$store.getters.favorites;
     },
   },
   methods: {
     changeCategory(category) {
-      this.category = category;
+      if (category === this.$store.state.category) return;
+
+      this.$store.commit('changeCategory', category);
     },
     handleSelectRadio(id) {
       if (id === undefined) return;
 
-      // If the radio is already selected, toggle isPlaying.
-      if (this.selected === id) return (this.isPlaying = !this.isPlaying);
-
-      this.selected = id;
-      this.isPlaying = true;
+      this.$store.dispatch('selectRadio', id);
     },
     handleAddFavorite(id) {
-      const radio = this.radios.find(r => r.id === id);
-      if (!radio) return;
+      if (id === undefined) return;
 
-      if (!this.favorites.includes(radio)) return this.favorites.push(radio);
-      else this.favorites = this.favorites.filter(f => f !== radio);
+      this.$store.dispatch('setFavorite', id);
     },
   },
 };
@@ -295,9 +299,11 @@ export default {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
+  justify-content: space-evenly;
 }
 
 .player {
+  box-shadow: 0 -1px 5px -3px rgba(0, 0, 0, 0.75);
   background-color: rgba(11, 10, 21, 1);
   background-image: linear-gradient(
     to right top,
