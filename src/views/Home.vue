@@ -44,8 +44,8 @@
             :id="radio.id"
             :isSelected="radio.id === selected"
             :isPlaying="isPlaying"
-            :isFavorite="favorites.includes(radio)"
-            @play-radio="handleSelectRadio"
+            :isFavorite="favorites.includes(radio.id)"
+            @play="handleSelectRadio(radio.id)"
             @add-favorite="handleAddFavorite"
           />
         </ul>
@@ -55,13 +55,14 @@
           <h2 class="radio-header">Your Favorites</h2>
         </div>
         <ul v-if="favorites.length !== 0" class="favorites-list">
-          <li v-for="fav in favorites" :key="fav.id" class="card-wrapper">
+          <li v-for="fav in $store.getters.favorites" :key="fav.id" class="card-wrapper">
             <FavoriteCard
               :id="fav.id"
               :image="fav.image"
               :isPlaying="isPlaying && selected === fav.id"
               :title="fav.name"
               @play="handleSelectRadio(fav.id)"
+              @remove="removeFavorite(fav.id)"
             />
           </li>
         </ul>
@@ -99,7 +100,7 @@ export default {
       return this.$store.state.category;
     },
     favorites() {
-      return this.$store.getters.favorites;
+      return this.$store.state.favorites;
     },
   },
   methods: {
@@ -117,6 +118,11 @@ export default {
       if (id === undefined) return;
 
       this.$store.dispatch('setFavorite', id);
+    },
+    removeFavorite(id) {
+      if (id === undefined) return;
+
+      this.$store.commit('removeFavorite', id);
     },
   },
 };

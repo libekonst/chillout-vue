@@ -1,9 +1,46 @@
+<template>
+  <div class="card">
+    <div
+      class="media"
+      @mouseenter="handleEnter()"
+      @mouseleave="handleLeave()"
+      @click="handleClick()"
+    >
+      <div :class="['overlay', {'overlay--show': isHover}]"></div>
+      <AsyncImage :src="image" :alt="`${name}'s logo`" class="image" />
+      <img :src="image" :class="['blurred', {'blurred--show': isHover}]" />
+      <div class="icon">
+        <div
+          :class="['icon__inner', {'icon__inner--border': isHover}]"
+          v-show="isHover || isPlaying"
+        >
+          <ion-icon v-if="isHover && isPlaying" name="ios-pause"></ion-icon>
+          <ion-icon v-else-if="!isHover && isPlaying" name="ios-volume-high"></ion-icon>
+          <ion-icon v-else-if="isHover" name="ios-play"></ion-icon>
+        </div>
+      </div>
+      <!-- <div class="favorite-2"> -->
+      <FavoriteButton
+        v-if="isHover"
+        :isFavorite="true"
+        @click.stop.native="$emit('remove', id)"
+        class="favorite"
+      />
+      <!-- </div> -->
+    </div>
+    <div class="title">
+      <p class="title__inner">{{title}}</p>
+    </div>
+  </div>
+</template>
+
 <script>
 import AsyncImage from '@/components/AsyncImage.vue';
+import FavoriteButton from '@/components/FavoriteButton.vue';
 
 export default {
   name: 'FavoriteCard',
-  components: { AsyncImage },
+  components: { AsyncImage, FavoriteButton },
   props: {
     name: String,
     image: String,
@@ -25,34 +62,6 @@ export default {
   },
 };
 </script>
-
-<template>
-  <div class="card">
-    <div
-      class="media"
-      @mouseenter="handleEnter()"
-      @mouseleave="handleLeave()"
-      @click="handleClick()"
-    >
-      <div :class="['overlay', {'overlay--show': isHover}]"></div>
-      <AsyncImage :src="image" :alt="`${name}'s logo`" class="image"/>
-      <img :src="image" :class="['blurred', {'blurred--show': isHover}]">
-      <div class="icon">
-        <div
-          :class="['icon__inner', {'icon__inner--border': isHover}]"
-          v-show="isHover || isPlaying"
-        >
-          <ion-icon v-if="isHover && isPlaying" name="ios-pause"></ion-icon>
-          <ion-icon v-else-if="!isHover && isPlaying" name="ios-volume-high"></ion-icon>
-          <ion-icon v-else-if="isHover" name="ios-play"></ion-icon>
-        </div>
-      </div>
-    </div>
-    <div class="title">
-      <p class="title__inner">{{title}}</p>
-    </div>
-  </div>
-</template>
 
 <style lang="scss" scoped>
 .card {
@@ -164,6 +173,17 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+}
+
+.favorite {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 5;
+
+  &:hover {
+    color: white;
   }
 }
 </style>

@@ -25,7 +25,7 @@ export default new Vuex.Store({
     },
   },
   getters: {
-    favorites: state => state.favorites.map(f => data.find(d => d.id === f)),
+    favorites: state => state.favorites.map(fav => data.find(r => r.id === fav)),
     radios: state => data.filter(radio => radio.label === state.category),
   },
   actions: {

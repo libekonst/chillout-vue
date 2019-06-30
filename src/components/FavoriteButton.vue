@@ -1,25 +1,23 @@
 <template>
-   <!-- Onclick, stop propagation and emit add favorite event -->
-    <button
-      :class="['favorite', {'favorite--checked': isFavorite}]"
-      :title="isFavorite ? 'Remove from Your Favorites': 'Add to Your Favorites'"
-    >
-      <ion-icon v-if="isFavorite" name="md-heart"></ion-icon>
-      <ion-icon v-else name="md-heart-empty"></ion-icon>
-    </button>
+  <!-- Onclick, stop propagation and emit add favorite event -->
+  <button
+    :class="['favorite', {'favorite--checked': isFavorite}]"
+    :title="isFavorite ? 'Remove from Your Favorites': 'Add to Your Favorites'"
+  >
+    <ion-icon :name="isFavorite ? 'md-heart' : 'md-heart-empty'"></ion-icon>
+  </button>
 </template>
 
 <script>
 export default {
   name: 'FavoriteButton',
-  props:{
+  props: {
     isFavorite: Boolean,
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-
 .favorite {
   /* Flex */
   display: flex;
@@ -36,13 +34,12 @@ export default {
   }
 
   &:hover {
-    color: #F54D73;
+    color: #f54d73;
   }
 
   &--checked {
     color: #42b983;
-    color: #F54D73;
+    color: #f54d73;
   }
 }
-
 </style>

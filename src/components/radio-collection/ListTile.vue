@@ -13,17 +13,9 @@
     </div>
 
     <!-- Onclick, stop propagation and emit add favorite event -->
-    <button
-      :class="['favorite', {'favorite--checked': isFavorite}]"
-      @click.stop="handleFavorite"
-      :title="isFavorite ? 'Remove from Your Favorites': 'Add to Your Favorites'"
-    >
-      <ion-icon v-if="isFavorite" name="md-heart"></ion-icon>
-      <ion-icon v-else name="md-heart-empty"></ion-icon>
-    </button>
-    <!-- <FavoriteButton :isFavorite="isFavorite" @click.stop="handleFavorite" /> -->
+    <FavoriteButton v-bind:isFavorite="isFavorite" @click.stop.native="handleFavorite" />
     <div>
-      <AsyncImage :src="image" :alt="`${name}'s logo`" class="image"/>
+      <AsyncImage :src="image" :alt="`${name}'s logo`" class="image" />
     </div>
     <div class="title">{{name}}</div>
   </li>
@@ -31,7 +23,7 @@
 
 <script>
 import AsyncImage from '@/components/AsyncImage.vue';
-import FavoriteButton from '@/components/FavoriteButton.vue'
+import FavoriteButton from '@/components/FavoriteButton.vue';
 
 export default {
   name: 'ListTile',
@@ -53,7 +45,7 @@ export default {
       this.isHovered = false;
     },
     handleClick() {
-      this.$emit('play-radio', this.id);
+      this.$emit('play', this.id);
     },
     handleFavorite() {
       this.$emit('add-favorite', this.id);
