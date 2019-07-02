@@ -44,8 +44,10 @@ export default new Vuex.Store({
   actions: {
     selectRadio: ({ commit, state }, id) => {
       // If the radio is already selected, toggle isPlaying.
-      if (state.selected === id) return commit('togglePlaying', !state.isPlaying);
-
+      if (state.selected === id) {
+        if (state.isLoading) commit('setLoading', false);
+        return commit('togglePlaying', !state.isPlaying);
+      }
       // Else
       commit('setSelected', id);
       commit('setPlaying', true);
@@ -55,13 +57,32 @@ export default new Vuex.Store({
 
       commit('removeFavorite', id);
     },
-    startLoad: ({ commit }) => {
-      commit('setLoading', true);
-      commit('setPlaying', false);
+    startLoad: ({ commit }, { src, resetAudioSrc }) => {
+      if (src !== resetAudioSrc) commit('setLoading', true);
     },
-    startPlaying: ({ commit }) => {
-      commit('setLoading', false);
-      commit('setPlaying', true);
+    startPlaying: ({ commit, state }) => {
+      if (state.isLoading) commit('setLoading', false);
+      if (!state.isPlaying) commit('setPlaying', true);
+    },
+    startAudio: async ({ state, getters, dispatch }, { audio, id, resetAudioSrc }) => {
+      // Pause the audio and reset the source to force-stop buffering.
+      // Restricts unnecessary data usage and prevents playing old content downloaded after pausing.
+      if (
+        (state.selected === id && state.isPlaying) ||
+        (state.pending === id && state.isLoading)
+      ) {
+        audio.pause();
+        audio.src = resetAudioSrc;
+        dispatch('selectRadio', id);
+
+        return audio.load();
+      }
+
+      // If source is undefined, the promise will be rejected and handled by the onError handler.
+      dispatch('selectRadio', id);
+      audio.src = getters.selected && getters.selected.source;
+      await audio.play();
+      console.log(audio);
     },
   },
 });

@@ -131,22 +131,7 @@ export default {
       if (id === undefined) return alert('Select a radio first!');
 
       const { audio } = this.$refs;
-      // Pause the audio and reset the source to force-stop buffering.
-      // Restricts unnecessary data usage and prevents playing old content downloaded after pausing.
-      if (
-        (this.$store.state.selected === id && this.$store.state.isPlaying) ||
-        (this.$store.state.pending === id && this.$store.state.isLoading)
-      ) {
-        audio.pause();
-        audio.src = resetAudioSrc;
-        return audio.load();
-      }
-
-      // If undefined, the promise will be rejected and handled by the onError handler.
-      this.$store.dispatch('selectRadio', id);
-      audio.src = this.radioSource;
-      await audio.play();
-      console.log(audio);
+      return this.$store.dispatch('startAudio', { audio, id, resetAudioSrc });
     },
     handleAddFavorite(id) {
       if (id === undefined) return;
@@ -159,7 +144,8 @@ export default {
       this.$store.commit('removeFavorite', id);
     },
     handleLoadStarted() {
-      this.$store.dispatch('startLoad');
+      const { src } = this.$refs.audio;
+      this.$store.dispatch('startLoad', { src, resetAudioSrc });
     },
     handleAudioStarted() {
       this.$store.dispatch('startPlaying');
