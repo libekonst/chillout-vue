@@ -1,0 +1,337 @@
+<template>
+  <div class="home">
+    <header class="header">
+      <div class="background"></div>
+      <div class="image-line">
+        <button
+          :class="['image-category', 'image-category--music', category === 'music' ? 'image-category--big' :'image-category--hover']"
+          title="Music"
+          @click="changeCategory('music')"
+        >
+          <span :class="[{'image-category__text': category === 'music'}]">Music</span>
+          <!-- <div class="image-category__overlay">Music</div> -->
+          <!-- <img
+            src="https://images.unsplash.com/photo-1494232410401-ad00d5433cfa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
+            alt="Music category image"
+          >-->
+        </button>
+        <button
+          :class="['image-category',{'image-category--big': category === 'news'}]"
+          title="News"
+          @click="changeCategory('news')"
+        >
+          <div class="image-category__overlay">News</div>
+          <img
+            src="https://images.unsplash.com/photo-1547679905-3c132ce6d489?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
+            alt="News category image"
+          />
+        </button>
+      </div>
+    </header>
+    <main class="content">
+      <!-- <section>Top left</section> -->
+      <!-- <section>Top Right</section> -->
+      <section class="radio-list">
+        <div class="sticky-top">
+          <h2 class="radio-header">{{category | toUpperInitial}} Radios</h2>
+        </div>
+        <ul>
+          <ListTile
+            v-for="radio in radios"
+            :name="radio.name"
+            :image="radio.image"
+            :key="radio.id"
+            :id="radio.id"
+            :isSelected="radio.id === selected"
+            :isPlaying="isPlaying"
+            :isFavorite="favorites.includes(radio.id)"
+            @play="handleSelectRadio(radio.id)"
+            @add-favorite="handleAddFavorite"
+          />
+        </ul>
+      </section>
+      <section class="favorites-section">
+        <div class="sticky-top">
+          <h2 class="radio-header">Your Favorites</h2>
+        </div>
+        <ul v-if="favorites.length !== 0" class="favorites-list">
+          <li v-for="fav in $store.getters.favorites" :key="fav.id" class="card-wrapper">
+            <FavoriteCard
+              :id="fav.id"
+              :image="fav.image"
+              :isPlaying="isPlaying && selected === fav.id"
+              :title="fav.name"
+              @play="handleSelectRadio(fav.id)"
+              @remove="removeFavorite(fav.id)"
+            />
+          </li>
+        </ul>
+        <div v-else class="favorites-empty">
+          <p class="favorites-empty__text">Your favorite radios will appear here.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+</template>
+
+<script>
+// @ is an alias to /src
+import ListTile from '@/components/radio-collection/ListTile.vue';
+import FavoriteCard from '@/components/radio-collection/FavoriteCard.vue';
+const resetAudioSrc = 'javascript:void(0)';
+
+export default {
+  name: 'home',
+  components: {
+    ListTile,
+    FavoriteCard,
+  },
+  computed: {
+    radios() {
+      return this.$store.getters.radios;
+    },
+    selected() {
+      return this.$store.state.selected;
+    },
+    isPlaying() {
+      return this.$store.state.isPlaying;
+    },
+    category() {
+      return this.$store.state.category;
+    },
+    favorites() {
+      return this.$store.state.favorites;
+    },
+    isLoading() {
+      return this.$store.state.isLoading;
+    },
+    radioSource() {
+      if (this.$store.getters.selected !== undefined)
+        return this.$store.getters.selected.source;
+    },
+  },
+  methods: {
+    changeCategory(category) {
+      if (category === this.$store.state.category) return;
+
+      this.$store.commit('changeCategory', category);
+    },
+    async handleSelectRadio(id) {
+      // If the provided ID is undefined, then no radio is selected.
+      if (id === undefined) return alert('Select a radio first!');
+
+      const { audio } = this.$refs;
+      return this.$store.dispatch('startAudio', { audio, id, resetAudioSrc });
+    },
+    handleAddFavorite(id) {
+      if (id === undefined) return;
+
+      this.$store.dispatch('setFavorite', id);
+    },
+    removeFavorite(id) {
+      if (id === undefined) return;
+
+      this.$store.commit('removeFavorite', id);
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+@import '@/assets/scss/_scrollbar.scss';
+@import '@/assets/scss/_breakpoints.scss';
+
+
+
+.home {
+  width: 100%;
+  height: 100%;
+  background-color: #fafafa;
+
+  /* Grid */
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.header {
+  /* background-color: purple; */
+  height: 13rem;
+  /* background-color: #42b983; */
+  position: relative;
+  background-color: rgb(23, 25, 54);
+  display: flex;
+
+  & .background {
+    background-color: #fafafa;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0px -4px 26px -5px rgba(95, 95, 95, 0.3);
+
+    // z-index: -1;
+  }
+
+  & .image-line {
+    width: 100%;
+    margin: auto;
+
+    /* Flex */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    & .image-category {
+      position: relative;
+      border-radius: 10px;
+      height: 6rem;
+      width: 7rem;
+      overflow: hidden;
+      margin-right: 2.5rem;
+      cursor: pointer;
+      border-bottom: 2px solid rgb(245, 77, 115);
+      transition: all 0.2s ease-in-out;
+
+      /* Text */
+      color: #fafafa;
+      font-size: 1.5rem;
+      font-family: 'Courgette', sans-serif;
+
+      &--hover {
+        /* no hover on mobile */
+        @media (min-width: $md) {
+          &:hover {
+            transform: translateY(-8px) scale(1.1);
+          }
+        }
+      }
+
+      &--music {
+        background-image: linear-gradient(
+          to right bottom,
+          #42b983,
+          lighten(#42b983, 30%)
+        );
+      }
+
+      &__text:hover {
+        /* transform: translateY(10px); */
+      }
+
+      &--big {
+        transform: scale(1.4, 1.7) translateY(0);
+      }
+
+      &__overlay {
+        /* Position */
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        /* Styles */
+        background-color: rgba(11, 10, 21, 0.2);
+        color: #fafafa;
+        font-size: 1.5rem;
+        font-family: 'Courgette', sans-serif;
+
+        /* Flex */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        /* Reaveal */
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s linear;
+      }
+
+      &:hover .image-category__overlay {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+
+    & img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.content {
+  /* Grid */
+  display: grid;
+  /* grid-template-rows: 1fr 3fr; */
+  grid-template-columns: 2fr 1fr;
+  align-items: stretch;
+  justify-content: stretch;
+
+  /* Styles */
+  overflow: hidden;
+}
+
+.radio-list {
+  @include autohideScrollbar;
+
+  overflow: auto;
+}
+
+.radio-header {
+  font-size: 1.2rem;
+  text-align: start;
+  padding: 0 0 1rem 2rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+}
+
+.favorites-section {
+  @include autohideScrollbar;
+
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.favorites-empty {
+  flex: 1;
+  display: flex;
+  border-radius: 10px;
+  background-color: #f4f4f4;
+  margin: 0.3rem 0.75rem;
+  padding: 0 0.5rem;
+
+  &__text {
+    color: #afafaf;
+    font-size: 1.5rem;
+    margin: auto;
+  }
+}
+
+.favorites-list {
+  /* Flex */
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.sticky-top {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #fafafa;
+}
+
+ul {
+  padding: 0 1rem;
+}
+
+.card-wrapper {
+  margin: 0.75rem;
+}
+</style>

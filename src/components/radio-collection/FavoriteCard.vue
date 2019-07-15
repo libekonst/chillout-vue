@@ -64,14 +64,14 @@ export default {
 <style lang="scss" scoped>
 .card {
   height: auto;
-  width: 7.5rem;
+  width: 8rem;
 }
 
 .media {
   /* Styles */
   border-radius: 10px;
   position: relative;
-  height: 7.5rem;
+  height: 8rem;
   width: auto;
 
   /* Flex */

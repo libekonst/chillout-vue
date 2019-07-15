@@ -81,6 +81,11 @@ li {
     grid-template-columns: 0 3rem 3rem auto;
   }
 
+  /* Increase zindex here instead of reducing pseudo's, because it conflicts with parent bg color. */
+  & * {
+    z-index: 2;
+  }
+
   /* Highlight On Hover */
   &::before {
     content: '';
@@ -89,7 +94,6 @@ li {
     height: 100%;
     border-radius: 5px;
     background-color: rgba(210, 210, 210, 0.2);
-    z-index: -1;
     opacity: 0;
     visibility: hidden;
     transition: all 0.2s linear;
