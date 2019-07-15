@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import data from '@/data';
 
 Vue.use(Vuex);
+const resetAudioSrc = 'javascript:void(0)';
 
 export default new Vuex.Store({
   state: {
@@ -17,6 +18,7 @@ export default new Vuex.Store({
     isLoading: false,
 
     // Audio
+    audioSource: resetAudioSrc,
   },
   mutations: {
     // Playback
@@ -35,6 +37,7 @@ export default new Vuex.Store({
     removeFavorite: (state, id) => {
       state.favorites = state.favorites.filter(f => f !== id);
     },
+    setAudioSource: (state, source) => (state.audioSource = source),
   },
   getters: {
     favorites: state => state.favorites.map(fav => data.find(r => r.id === fav)),
@@ -57,32 +60,35 @@ export default new Vuex.Store({
 
       commit('removeFavorite', id);
     },
-    startLoad: ({ commit }, { src, resetAudioSrc }) => {
+    startLoad: ({ commit }, src) => {
       if (src !== resetAudioSrc) commit('setLoading', true);
     },
     startPlaying: ({ commit, state }) => {
       if (state.isLoading) commit('setLoading', false);
       if (!state.isPlaying) commit('setPlaying', true);
     },
-    startAudio: async ({ state, getters, dispatch }, { audio, id, resetAudioSrc }) => {
+    startAudio: async ({ commit, state, getters, dispatch }, id) => {
       // Pause the audio and reset the source to force-stop buffering.
       // Restricts unnecessary data usage and prevents playing old content downloaded after pausing.
       if (
         (state.selected === id && state.isPlaying) ||
         (state.pending === id && state.isLoading)
       ) {
-        audio.pause();
-        audio.src = resetAudioSrc;
+        // audio.pause();
+        // audio.src = resetAudioSrc; // make commit
+        commit('setAudioSource', resetAudioSrc);
         dispatch('selectRadio', id);
 
-        return audio.load();
+        // return audio.load();
       }
 
       // If source is undefined, the promise will be rejected and handled by the onError handler.
       dispatch('selectRadio', id);
-      audio.src = getters.selected && getters.selected.source;
-      await audio.play();
-      console.log(audio);
+      // audio.src = getters.selected && getters.selected.source; // make commit
+      getters.selected && commit('setAudioSource', getters.selected.source);
+
+      // await audio.play();
+      // console.log(audio);
     },
   },
 });

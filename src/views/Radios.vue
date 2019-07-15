@@ -120,8 +120,8 @@ export default {
       // If the provided ID is undefined, then no radio is selected.
       if (id === undefined) return alert('Select a radio first!');
 
-      const { audio } = this.$refs;
-      return this.$store.dispatch('startAudio', { audio, id, resetAudioSrc });
+      // const { audio } = this.$refs;
+      return this.$store.dispatch('startAudio', id);
     },
     handleAddFavorite(id) {
       if (id === undefined) return;

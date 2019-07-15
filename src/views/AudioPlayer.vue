@@ -1,10 +1,11 @@
 <template>
   <div class="player">
     Player
-    <h1 v-if="isLoading" style="color: white;">LOADING...</h1>
+    <h1 v-if="$store.state.isLoading" style="color: white;">LOADING...</h1>
     <audio
       :autoplay="false"
       ref="audio"
+      :src="$store.state.audioSource"
       @loadstart="handleLoadStarted()"
       @playing="handleAudioStarted()"
     >Your browser doesn't support the audio element :(</audio>
@@ -17,7 +18,7 @@ export default {
   methods: {
     handleLoadStarted() {
       const { src } = this.$refs.audio;
-      this.$store.dispatch('startLoad', { src, resetAudioSrc });
+      this.$store.dispatch('startLoad', src);
     },
     handleAudioStarted() {
       this.$store.dispatch('startPlaying');
